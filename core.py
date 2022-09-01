@@ -3,11 +3,13 @@ import datetime
 import enums
 import sql_methods
 from enums import SubscribeFilds, SubscribeFilds_3rb
+import locale
 
+locale.setlocale(locale.LC_TIME, "ru_RU")
 S_apic = ['Antharas', 'Valakas']
 apic = ['Orfen', 'Beleth', 'Baium', 'Core', 'Queen Ant']
 week_day_list = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
-Month_list = ['', 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь',
+Month_list = ['', 'Января', 'Февраля', 'Марта', 'Апреля', 'Майя', 'Июн', 'Июль', 'Август', 'Сентябрь', 'Октябрь',
               'Ноябрь', 'Декабрь']
 
 
@@ -99,6 +101,10 @@ def curent_time_now():
     return current_time_vl
 
 
+def nice_data_string(data):
+    return data.strftime("%A, %d %b  %H:%M")
+
+
 def create_message(bossname, server) -> str:
     bos = sql_methods.select_boss(bossname, server)
     bos_name = bos[0]
@@ -106,33 +112,25 @@ def create_message(bossname, server) -> str:
     bos[2] = bos[2].replace('.0000000', '')
     bos[3] = bos[3].replace('.0000000', '')
     killdata = datetime.datetime.strptime(bos[1], "%Y-%m-%d %H:%M:%S")
-    killdata_weekday = datetime.datetime.weekday(killdata)
     startresp = datetime.datetime.strptime(bos[2], "%Y-%m-%d %H:%M:%S")
-    startresp_weekday = week_day_list[datetime.datetime.weekday(startresp)]
-    start_resp_mounth = Month_list[startresp.month]
-    strt_resp_time = startresp.time('%H:%M')
-    strt_sresp_str = str(f'{startresp_weekday} {startresp.day} {start_resp_mounth}')
     endresp = datetime.datetime.strptime(bos[3], "%Y-%m-%d %H:%M:%S")
-    endresp_weekday = week_day_list[datetime.datetime.weekday(endresp)]
-    endresp_month = Month_list[endresp.month]
-
     now = curent_time_now()
     if startresp < now < endresp:
         waitrespend = endresp - now
-        message = (f'''Босс {bos_name} был убит {killdata} \n'''
-                   f'''Время начала респауна {startresp} \n'''
+        message = (f'''Босс {bos_name} был убит {nice_data_string(killdata)} \n'''
+                   f'''Время начала респауна *{nice_data_string(startresp)}* \n'''
                    f'''Респаун уже идет !!! \n'''
                    f'''Максимальное время ожидания респа {waitrespend}''')
     elif now < startresp:
         waitrespstart = startresp - now
         waitrespend = endresp - now
-        message = (f'''Босс {bos_name} был убит {killdata} \n'''
-                   f'''Время начала респауна {startresp} \n'''
+        message = (f'''Босс {bos_name} был убит {nice_data_string(killdata)} \n'''
+                   f'''Время начала респауна *{nice_data_string(startresp)}* \n'''
                    f'''До начала респауна осталось {waitrespstart} \n'''
                    f'''Максимальное время ожидания {waitrespend}''')
     else:
         waitboss = now - endresp
-        message = (f'''Босс {bos_name} был убит {killdata}  \n'''
+        message = (f'''Босс {bos_name} был убит {nice_data_string(killdata)}  \n'''
                    f'''Время начала респауна {startresp} \n'''
                    f'''Респаун кончился, Босс жив в течении {waitboss}....''')
     return message
@@ -141,7 +139,6 @@ def create_message(bossname, server) -> str:
 def find_min_time_for_timer_notification_3rb(mintimetable: list[tuple]):
     res_dict = dict()
     user_id_text = str()
-    sub_id_text = str()
     if len(mintimetable) > 0:
         row = mintimetable[0]
         server = row[SubscribeFilds_3rb.server.value]
@@ -215,7 +212,7 @@ def create_message_castle(castle_info, server) -> str:
     if castle_siege_time_valid > now:
         waitsiege = castle_siege_time_valid - now
         message = (f'''Осада Замка {castle_name} \n'''
-                   f'''Начнется {castle_siege_time_valid} \n'''
+                   f'''Начнется *{nice_data_string(castle_siege_time_valid)}* \n'''
                    f'''До начала осады осталось {waitsiege} \n''')
     else:
         sige_time = now - castle_siege_time_valid

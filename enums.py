@@ -2,9 +2,9 @@ from enum import Enum
 
 
 class BossNames(Enum):
-    drake = {'Antharas': (18, 22,  7), 'Valakas': (18, 22, 7)}
-    simple_apik = {'Orfen': (18, 22,  3), 'Beleth': (18, 22, 5), 'Baium': (18, 22, 4), 'Core': 0,
-                   'Queen Ant': (18, 22, 2)}
+    drake = {'Antharas': (18, 00,  7), 'Valakas': (18, 00, 7)}
+    simple_apik = {'Orfen': (18, 00,  3), 'Beleth': (18, 00, 5), 'Baium': (18, 00, 4), 'Core': 0,
+                   'Queen Ant': (18, 00, 2)}
 
     @classmethod
     def s_apic(cls):

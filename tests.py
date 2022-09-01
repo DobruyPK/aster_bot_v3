@@ -18,6 +18,7 @@ import requests
 #
 # from bot import start_not, start_not_3rb
 import parse
+from core import nice_data_string
 from parse import start_parse
 from sql_methods import get_all_tg_ids_for_server_stus, get_all_users_subrkribe_to_server
 
@@ -28,5 +29,13 @@ from sql_methods import get_all_tg_ids_for_server_stus, get_all_users_subrkribe_
 #     print ('Boo!')
 
 import datetime
+import datetime
+import locale
+locale.setlocale(locale.LC_TIME, "ru_RU")
 now = datetime.datetime.now()
-print(now.month)
+
+def get_nice_datetime(input: datetime.datetime):
+    return input.strftime("%A %d %B %Y")
+
+
+print(get_nice_datetime(now))

@@ -219,7 +219,7 @@ def third_rb_loa_registration(callback_query):
     keyboard = types.InlineKeyboardMarkup()
     keyboard = keyboard.row(inline_btn_therd_rb_yes, inline_btn_therd_rb_no)
     bot.send_message(chat_id=callback_query.message.chat.id,
-                     text="Вы убил какого босса из 3х?", reply_markup=keyboard)
+                     text="Убил босса?", reply_markup=keyboard)
 
 
 def third_rb_loa_boss_was_dead(callback_query):
@@ -380,7 +380,7 @@ def subskribe_castle_message(callback_query):
     message = core.create_message_castle(castle_info, server)
     if castle_siege_time > vl_current_time:
         bot.send_message(chat_id=callback_query.message.chat.id,
-                         text=message)
+                         text=message, parse_mode="Markdown")
     else:
         inline_subsk = types.InlineKeyboardButton(
             f'Подписаться  на осаду замка {castlename}!',
@@ -388,7 +388,7 @@ def subskribe_castle_message(callback_query):
         keyboard = types.InlineKeyboardMarkup().add(inline_subsk)
         bot.send_message(chat_id=callback_query.message.chat.id,
                          text=message,
-                         reply_markup=keyboard)
+                         reply_markup=keyboard, parse_mode="Markdown")
 
 
 def list_fortnes(callback_query):
@@ -504,7 +504,7 @@ def resp_time(callback_query: types.CallbackQuery):
         keyboard = types.InlineKeyboardMarkup().add(inline_subsk)
         bot.send_message(chat_id=callback_query.message.chat.id,
                          text=message,
-                         reply_markup=keyboard)
+                         reply_markup=keyboard, parse_mode="Markdown")
 
 
 def generate_bottom(staus, bossname, typesubs, server):
