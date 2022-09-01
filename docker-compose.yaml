@@ -1,0 +1,13 @@
+# версия docker-compose
+version: '3.8'
+
+# имена и описания контейнеров, которые должны быть развёрнуты
+services:
+  web:
+    build: .
+    restart: always
+    ports:
+      - "1433:1433"
+    env_file:
+      - ./.env
+    network_mode: host
